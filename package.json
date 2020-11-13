@@ -1,0 +1,19 @@
+{
+  "name": "cake-shop",
+  "version": "1.0.0",
+  "description": "Cake Shop app - TypeScript for Node.js Bootcamp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/servandocerna/cake-shop.git"
+  },
+  "author": "Servando Cerna",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/servandocerna/cake-shop/issues"
+  },
+  "homepage": "https://github.com/servandocerna/cake-shop#readme"
+}
