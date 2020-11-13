@@ -8,7 +8,6 @@ const config = {
 };
 
 const { MONGODB_URL } = process.env;
-console.log(MONGODB_URL);
 const URL = MONGODB_URL;
 
 mongoose.connect(URL, config);

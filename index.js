@@ -4,6 +4,7 @@ const logger = require('morgan');
 const helmet = require('helmet');
 const express = require('express');
 
+const routes = require('./routes');
 const { isProductionEnvironment } = require('./utils');
 
 if (!isProductionEnvironment()) require('dotenv').config({ path: path.join(__dirname, '.env') });
@@ -18,9 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
 app.use(cors());
 
-app.get('/', (req, res) => {
-  res.send('Hello Cake show!')
-})
+app.use('/', routes);
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`)
