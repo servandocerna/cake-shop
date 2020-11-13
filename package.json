@@ -4,7 +4,9 @@
   "description": "Cake Shop app - TypeScript for Node.js Bootcamp",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "watch": "nodemon index.js",
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,11 @@
   "bugs": {
     "url": "https://github.com/servandocerna/cake-shop/issues"
   },
-  "homepage": "https://github.com/servandocerna/cake-shop#readme"
+  "homepage": "https://github.com/servandocerna/cake-shop#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^4.2.0",
+    "morgan": "^1.10.0"
+  }
 }
