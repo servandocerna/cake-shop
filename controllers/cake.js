@@ -14,16 +14,25 @@ async function create(req, res, next) {
 
 async function find(req, res, next) {
   try {
-    console.log('find...');
     const cakes = await cakeUseCase.find();
     return res.status(OK).send(cakes);
   } catch (error) {
-    console.log(error);
+    return next(error);
+  }
+}
+
+async function findById(req, res, next) {
+  try {
+    const { id } = req.params;
+    const cake = await cakeUseCase.findById(id);
+    return res.send(cake);
+  } catch (error) {
     return next(error);
   }
 }
 
 module.exports = {
   create,
-  find
+  find,
+  findById
 };

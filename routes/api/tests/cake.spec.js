@@ -1,5 +1,11 @@
 const request = require('supertest');
-const { BAD_REQUEST, CREATED, OK } = require('http-status-codes');
+const { Types } = require('mongoose');
+const {
+  BAD_REQUEST,
+  CREATED,
+  OK,
+  NOT_FOUND
+ } = require('http-status-codes');
 
 const app = require('../../../app');
 const dbTest = require('../../../config/dbTest');
@@ -107,6 +113,34 @@ describe('Cake API', () => {
 
       const { body } = response;
       expect(body.length).toBe(2);
+    });
+  });
+
+  describe('Get a cake', () => {
+    it('When id param is not defined', async () => {
+      await request(app)
+        .get(`${route}/${Types.ObjectId()}`)
+        .expect('Content-Type', /json/)
+        .expect(BAD_REQUEST);
+    });
+
+    it('When finds an existing cake', async () => {
+      const cake1 = {
+        name: 'pastelito_1',
+        price: 100,
+        flavors: ['CHOCOLATE']
+      };
+      const cake = await request(app)
+        .post(route)
+        .send(cake1);
+
+      const response = await request(app)
+        .get(`${route}/${cake.body._id}`)
+        .expect('Content-Type', /json/)
+        .expect(OK);
+
+      const { body } = response;
+      expect(body._id).toBe(cake.body._id);
     });
   });
 });

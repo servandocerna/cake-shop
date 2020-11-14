@@ -38,7 +38,6 @@ const evalueError = (err) => {
   const instance = err.constructor.name;
   const type = err.name;
   const { code, message } = err;
-
   if (code) {
     return { status: code, error: { code, message } };
   }
@@ -49,10 +48,6 @@ const evalueError = (err) => {
 
   if (instance === 'MongoError') {
     return mongooseError(type, message);
-  }
-
-  if (instance === 'TypeError') {
-    return getResponse(type, message, BAD_REQUEST);
   }
 
   if (type === 'ValidationError') {
