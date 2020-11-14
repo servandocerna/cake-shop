@@ -5,11 +5,17 @@ async function create(params) {
   return newCake;
 }
 
+async function find() {
+  const cakes = await cakeRepository.find();
+  return cakes;
+}
+
 async function empty() {
   return await cakeRepository.empty();
 }
 
 module.exports = {
   create,
+  find,
   empty
 };

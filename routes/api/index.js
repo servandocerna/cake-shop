@@ -1,8 +1,6 @@
 const router = require('express').Router();
 
-const { storeCakeValidator } = require('./validators');
-
 const cakeRoutes = require('./cake');
-router.use('/cakes', storeCakeValidator, cakeRoutes);
+router.use('/cakes', cakeRoutes);
 
 module.exports = router;

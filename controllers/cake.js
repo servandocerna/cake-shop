@@ -1,4 +1,4 @@
-const { CREATED, BAD_REQUEST } = require('http-status-codes');
+const { CREATED, OK } = require('http-status-codes');
 
 const cakeUseCase = require('../useCases/cake');
 
@@ -12,6 +12,18 @@ async function create(req, res, next) {
   }
 }
 
+async function find(req, res, next) {
+  try {
+    console.log('find...');
+    const cakes = await cakeUseCase.find();
+    return res.status(OK).send(cakes);
+  } catch (error) {
+    console.log(error);
+    return next(error);
+  }
+}
+
 module.exports = {
-  create
+  create,
+  find
 };
