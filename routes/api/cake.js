@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
-router.get('/', (req, res) => {
-  res.send('Hello cake route!')
-});
+const cakeController = require('../../controllers/cake');
+
+router.post('/', cakeController.create);
 
 module.exports = router;

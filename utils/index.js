@@ -6,6 +6,13 @@ const { NODE_ENV } = process.env;
  */
 const isProductionEnvironment = (environment = NODE_ENV) => environment === 'PRODUCTION';
 
+/**
+ * @param {String} environment
+ * @returns {Boolean}
+ */
+const isTestingEnvironment = (environment = NODE_ENV) => environment === 'test';
+
 module.exports = {
-  isProductionEnvironment
+  isProductionEnvironment,
+  isTestingEnvironment
 };
