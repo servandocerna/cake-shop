@@ -3,8 +3,7 @@ const { Types } = require('mongoose');
 const {
   BAD_REQUEST,
   CREATED,
-  OK,
-  NOT_FOUND
+  OK
  } = require('http-status-codes');
 
 const app = require('../../../app');
@@ -28,7 +27,7 @@ describe('Cake API', () => {
 
   describe('Create cake', () => {
     it('When some parameter is not defined', async () => {
-      await request(app)
+        await request(app)
         .post(route)
         .send({})
         .expect('Content-Type', /json/)
@@ -57,7 +56,7 @@ describe('Cake API', () => {
       expect(flavors).toEqual(expect.arrayContaining(['CHOCOLATE']));
     });
 
-    it.skip('When a cake with that name already exists', async () => {
+    it('When a cake with that name already exists', async () => {
       const params = {
         name: 'pastelito',
         price: 100,
@@ -72,7 +71,7 @@ describe('Cake API', () => {
         .post(route)
         .send(params)
         .expect('Content-Type', /json/)
-        .expect(INTERNAL_SERVER_ERROR);
+        .expect(BAD_REQUEST);
     });
   });
 
@@ -117,7 +116,7 @@ describe('Cake API', () => {
   });
 
   describe('Get a cake', () => {
-    it('When id param is not defined', async () => {
+    it('When id does not exists', async () => {
       await request(app)
         .get(`${route}/${Types.ObjectId()}`)
         .expect('Content-Type', /json/)
@@ -141,6 +140,44 @@ describe('Cake API', () => {
 
       const { body } = response;
       expect(body._id).toBe(cake.body._id);
+    });
+  });
+
+  describe('Update a cake', () => {
+    it('When id does not exists', async () => {
+      await request(app)
+      .put(`${route}/${Types.ObjectId()}`)
+        .expect('Content-Type', /json/)
+        .expect(BAD_REQUEST);
+    });
+
+    it('When update is successfully', async () => {
+      const cake1 = {
+        name: 'pastelito_1',
+        price: 100,
+        flavors: ['CHOCOLATE']
+      };
+      const cake = await request(app)
+        .post(route)
+        .send(cake1);
+
+      const params = {
+        name: 'pastelito_2',
+        price: 200,
+        flavors: ['FRESA']
+      };
+
+      const response = await request(app)
+      .put(`${route}/${cake.body._id}`)
+        .send(params)
+        .expect('Content-Type', /json/)
+        .expect(OK);
+
+      const { body } = response;
+      const { name, price, flavors } = body;
+      expect(name).toBe('pastelito_2');
+      expect(price).toBe(200);
+      expect(flavors).toEqual(expect.arrayContaining(['FRESA']));
     });
   });
 });

@@ -31,8 +31,20 @@ async function findById(req, res, next) {
   }
 }
 
+async function update(req, res, next) {
+  try {
+    const { id } = req.params;
+    const { body } = req;
+    const cake = await cakeUseCase.update(id, body);
+    return res.send(cake);
+  } catch (error) {
+    return next(error);
+  }
+}
+
 module.exports = {
   create,
   find,
-  findById
+  findById,
+  update
 };

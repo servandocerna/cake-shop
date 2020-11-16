@@ -1,4 +1,4 @@
-const { NOT_FOUND } = require('http-status-codes');
+const { ResourceNotFoundError } = require('../utils/errors');
 
 const cakeRepository = require('../repositories/cake');
 
@@ -15,9 +15,19 @@ async function find() {
 async function findById(id) {
   const cake = await cakeRepository.findById(id);
   if (!cake) {
-    throw new Error(NOT_FOUND, `Cake with ${id} not found`);
+    throw new ResourceNotFoundError('Cake', id);
   }
   return cake;
+}
+
+async function update(id, item) {
+  const cake = await cakeRepository.findById(id);
+  if (!cake) {
+    throw new ResourceNotFoundError('Cake', id);
+  }
+
+  const updatedCake = cakeRepository.update(id, item);
+  return updatedCake;
 }
 
 async function empty() {
@@ -28,5 +38,6 @@ module.exports = {
   create,
   find,
   findById,
+  update,
   empty
 };

@@ -1,5 +1,5 @@
 const { body, validationResult } = require('express-validator');
-const { BAD_REQUEST} = require('http-status-codes');
+const { BAD_REQUEST } = require('http-status-codes');
 
 const formatErrors = errors => {
   const newErros = [...errors].map(error => {
@@ -20,7 +20,9 @@ const validateMiddleware = (req, res, next) => {
   return next();
 };
 
-const validate = params => [params, validateMiddleware];
+const validate = params => {
+  return [params, validateMiddleware];
+};
 
 const validateCreateCakeBody = [
   body('name')

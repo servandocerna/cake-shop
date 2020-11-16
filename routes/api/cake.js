@@ -6,5 +6,6 @@ const cakeController = require('../../controllers/cake');
 router.post('/', storeCakeValidator, cakeController.create);
 router.get('/', cakeController.find);
 router.get('/:id', cakeController.findById);
+router.put('/:id', cakeController.update);
 
 module.exports = router;
