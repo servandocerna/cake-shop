@@ -15,11 +15,24 @@ async function findById(id) {
 }
 
 async function update(id, item) {
-  return cakeModel.findByIdAndUpdate(id, item, { new: true }).exec();
+  return cakeModel.findByIdAndUpdate(id, item, { new: true, runValidators: true }).exec();
 }
 
 async function findByIdAndDelete(id) {
   return cakeModel.findByIdAndDelete(id).exec();
+}
+
+async function search(params = {}) {
+  const { name } = params;
+  const query = {
+    $and: [
+      name
+        ? { name }
+        : {}
+    ]
+  };
+  const items = await cakeModel.find(query).exec();
+  return items;
 }
 
 async function empty() {
@@ -33,5 +46,6 @@ module.exports = {
   findById,
   update,
   findByIdAndDelete,
+  search,
   empty
 };

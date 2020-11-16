@@ -1,8 +1,14 @@
-const { ResourceNotFoundError } = require('../utils/errors');
+const { ResourceNotFoundError, CustomError } = require('../utils/errors');
 
 const cakeRepository = require('../repositories/cake');
 
 async function create(params) {
+  const { name } = params;
+  const cake = await cakeRepository.search({ name });
+  if (cake.length) {
+    throw new CustomError('CAKE_ALREADY_EXIST', 'A cake with the same name already exists');
+  }
+
   const newCake = await cakeRepository.create(params);
   return newCake;
 }
