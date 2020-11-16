@@ -180,4 +180,29 @@ describe('Cake API', () => {
       expect(flavors).toEqual(expect.arrayContaining(['FRESA']));
     });
   });
+
+  describe('Delete a cake', () => {
+    it('When id does not exists', async () => {
+      await request(app)
+      .delete(`${route}/${Types.ObjectId()}`)
+        .expect('Content-Type', /json/)
+        .expect(BAD_REQUEST);
+    });
+
+    it('When delete is successfully', async () => {
+      const cake1 = {
+        name: 'pastelito_1',
+        price: 100,
+        flavors: ['CHOCOLATE']
+      };
+      const cake = await request(app)
+        .post(route)
+        .send(cake1);
+
+      await request(app)
+      .delete(`${route}/${cake.body._id}`)
+        .expect('Content-Type', /json/)
+        .expect(OK);
+    });
+  });
 });

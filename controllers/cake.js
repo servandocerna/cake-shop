@@ -42,9 +42,20 @@ async function update(req, res, next) {
   }
 }
 
+async function findByIdAndDelete(req, res, next) {
+  try {
+    const { id } = req.params;
+    const cake = await cakeUseCase.findByIdAndDelete(id);
+    return res.send(cake);
+  } catch (error) {
+    return next(error);
+  }
+}
+
 module.exports = {
   create,
   find,
   findById,
+  findByIdAndDelete,
   update
 };

@@ -30,6 +30,17 @@ async function update(id, item) {
   return updatedCake;
 }
 
+
+async function findByIdAndDelete(id) {
+  const cake = await cakeRepository.findById(id);
+  if (!cake) {
+    throw new ResourceNotFoundError('Cake', id);
+  }
+
+  const deletedCake = cakeRepository.findByIdAndDelete(id);
+  return deletedCake;
+}
+
 async function empty() {
   return await cakeRepository.empty();
 }
@@ -39,5 +50,6 @@ module.exports = {
   find,
   findById,
   update,
+  findByIdAndDelete,
   empty
 };

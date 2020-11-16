@@ -18,6 +18,10 @@ async function update(id, item) {
   return cakeModel.findByIdAndUpdate(id, item, { new: true }).exec();
 }
 
+async function findByIdAndDelete(id) {
+  return cakeModel.findByIdAndDelete(id).exec();
+}
+
 async function empty() {
   if (!isTestingEnvironment()) throw new Error('this option is unsafe and prohibited');
   return cakeModel.deleteMany({}).exec();
@@ -28,5 +32,6 @@ module.exports = {
   find,
   findById,
   update,
+  findByIdAndDelete,
   empty
 };
