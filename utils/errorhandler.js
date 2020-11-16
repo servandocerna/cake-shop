@@ -1,4 +1,4 @@
-const { BAD_REQUEST, UNAUTHORIZED, INTERNAL_SERVER_ERROR } = require('http-status-codes');
+const { BAD_REQUEST, INTERNAL_SERVER_ERROR } = require('http-status-codes');
 
 /**
  *
@@ -21,7 +21,6 @@ const getResponse = (type = '', message = '', status = INTERNAL_SERVER_ERROR) =>
  * evalue an error
  */
 const evalueError = (err) => {
-  const instance = err.constructor.name;
   const type = err.name;
   const { code, message } = err;
   if (type === 'Error') {

@@ -11,6 +11,16 @@ const dbTest = require('../../../config/dbTest');
 const cakeUseCase = require('../../../useCases/cake');
 let route = '/api/cakes';
 
+const params = {
+  name: 'pastelito',
+  price: 100,
+  flavors: ['CHOCOLATE']
+};
+
+const createCake = async params => await request(app)
+    .post(route)
+    .send(params);
+
 describe('Cake API', () => {
 
   beforeAll(async () => {
@@ -35,11 +45,6 @@ describe('Cake API', () => {
     });
 
     it('When create is successfully', async () => {
-      const params = {
-        name: 'pastelito',
-        price: 100,
-        flavors: ['CHOCOLATE']
-      };
       const response = await request(app)
         .post(route)
         .send(params)
@@ -57,17 +62,8 @@ describe('Cake API', () => {
     });
 
     it('When a cake with that name already exists', async () => {
-      const params = {
-        name: 'pastelito',
-        price: 100,
-        flavors: ['CHOCOLATE']
-      };
-
+      await createCake(params);
       await request(app)
-        .post(route)
-        .send(params);
-
-      const response = await request(app)
         .post(route)
         .send(params)
         .expect('Content-Type', /json/)
@@ -87,23 +83,8 @@ describe('Cake API', () => {
     });
 
     it('When returns an array of cakes', async () => {
-      const cake1 = {
-        name: 'pastelito_1',
-        price: 100,
-        flavors: ['CHOCOLATE']
-      };
-      await request(app)
-        .post(route)
-        .send(cake1);
-
-      const cake2 = {
-          name: 'pastelito_2',
-          price: 200,
-          flavors: ['CHOCOLATE', 'FRESA']
-        };
-      await request(app)
-        .post(route)
-        .send(cake2);
+      await createCake({ name: 'pastelito_1', price: 100, flavors: ['CHOCOLATE'] })
+      await createCake({ name: 'pastelito_2', price: 200, flavors: ['CHOCOLATE', 'FRESA'] })
 
       const response = await request(app)
         .get(route)
@@ -124,14 +105,7 @@ describe('Cake API', () => {
     });
 
     it('When finds an existing cake', async () => {
-      const cake1 = {
-        name: 'pastelito_1',
-        price: 100,
-        flavors: ['CHOCOLATE']
-      };
-      const cake = await request(app)
-        .post(route)
-        .send(cake1);
+      const cake = await createCake(params);
 
       const response = await request(app)
         .get(`${route}/${cake.body._id}`)
@@ -152,24 +126,12 @@ describe('Cake API', () => {
     });
 
     it('When update is successfully', async () => {
-      const cake1 = {
-        name: 'pastelito_1',
-        price: 100,
-        flavors: ['CHOCOLATE']
-      };
-      const cake = await request(app)
-        .post(route)
-        .send(cake1);
-
-      const params = {
-        name: 'pastelito_2',
-        price: 200,
-        flavors: ['FRESA']
-      };
+      const cake = await createCake(params);
+      const newParams = { name: 'pastelito_2', price: 200, flavors: ['FRESA'] };
 
       const response = await request(app)
       .put(`${route}/${cake.body._id}`)
-        .send(params)
+        .send(newParams)
         .expect('Content-Type', /json/)
         .expect(OK);
 
@@ -190,14 +152,7 @@ describe('Cake API', () => {
     });
 
     it('When delete is successfully', async () => {
-      const cake1 = {
-        name: 'pastelito_1',
-        price: 100,
-        flavors: ['CHOCOLATE']
-      };
-      const cake = await request(app)
-        .post(route)
-        .send(cake1);
+      const cake = await createCake(params);
 
       await request(app)
       .delete(`${route}/${cake.body._id}`)
